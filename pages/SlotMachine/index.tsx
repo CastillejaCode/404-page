@@ -3,10 +3,13 @@ import Slot from './Slot';
 
 export default function SlotMachine() {
 	const [arr, setArr] = useState(randomize([4, 0, 4]));
+	const [spins, setSpins] = useState(0);
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		setArr(randomize());
+		if (spins > 1) setArr(randomize([2, 0, 0]));
+		else setArr(randomize());
+		setSpins(spins + 1);
 	}
 
 	return (
@@ -17,6 +20,7 @@ export default function SlotMachine() {
 				})}
 			</div>
 			<button>Reset</button>
+			<p>count: {spins}</p>
 		</form>
 	);
 }
