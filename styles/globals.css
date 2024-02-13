@@ -56,3 +56,12 @@ ul {
 	width: 3rem;
 	border: 1px solid white;
 }
+
+.slots {
+	display: flex;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
