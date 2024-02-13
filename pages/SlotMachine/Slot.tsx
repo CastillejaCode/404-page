@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function Slot({ array }: Props) {
-	const ref = useRef<HTMLDivElement>();
+	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		animate(
@@ -20,5 +20,5 @@ export default function Slot({ array }: Props) {
 			}
 		);
 	}, [array]);
-	return <div ref={ref} className='container'></div>;
+	return <div ref={ref} className='slot'></div>;
 }

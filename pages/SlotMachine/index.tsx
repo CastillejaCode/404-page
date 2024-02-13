@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 import Slot from './Slot';
 
 export default function SlotMachine() {
-	const [arr, setArr] = useState(randomize());
+	const [arr, setArr] = useState(randomize([4, 0, 4]));
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
@@ -26,10 +26,23 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-function createRandomArray(start, end, length: number) {
-	return Array.from({ length }, () => getRandomIntInclusive(start, end));
+type Args = {
+	range: [start: number, end: number];
+	length: number;
+	last?: number;
+};
+
+function createRandomArray({ range: [start, end], length, last }: Args) {
+	let arr = Array.from({ length }, () => getRandomIntInclusive(start, end));
+	if (typeof last == 'number') arr.splice(length - 1, 1, last);
+	console.log(arr);
+	return arr;
 }
 
-function randomize() {
-	return Array.from({ length: 3 }, (e) => createRandomArray(1, 9, 10));
+function randomize(arr?: number[]) {
+	const test = Array.from({ length: 3 }, (e, i) =>
+		createRandomArray({ range: [1, 9], length: 9, last: arr[i] })
+	);
+	// console.log(test);
+	return test;
 }
