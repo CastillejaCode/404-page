@@ -27,22 +27,26 @@ function getRandomIntInclusive(min, max) {
 }
 
 type Args = {
-	range: [start: number, end: number];
+	range: [number, number];
 	length: number;
 	last?: number;
 };
 
-function createRandomArray({ range: [start, end], length, last }: Args) {
-	let arr = Array.from({ length }, () => getRandomIntInclusive(start, end));
-	if (typeof last == 'number') arr.splice(length - 1, 1, last);
-	console.log(arr);
-	return arr;
+function createRandomArray({ range: [start, end], length }: Args) {
+	return Array.from({ length }, () => getRandomIntInclusive(start, end));
 }
 
-function randomize(arr?: number[]) {
-	const test = Array.from({ length: 3 }, (e, i) =>
-		createRandomArray({ range: [1, 9], length: 9, last: arr[i] })
+function randomize(riggedNumbers?: number[]) {
+	const range: [number, number] = [1, 9];
+	const length = 9;
+
+	let arr = Array.from({ length: 3 }, () =>
+		createRandomArray({ range, length })
 	);
-	// console.log(test);
-	return test;
+
+	if (riggedNumbers)
+		arr.forEach((e, i) => {
+			arr[i].splice(length - 1, 1, riggedNumbers[i]);
+		});
+	return arr;
 }
