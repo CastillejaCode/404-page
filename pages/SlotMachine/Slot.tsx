@@ -15,7 +15,7 @@ export default function Slot({ array }: Props) {
 					array.at(Math.round(progress * array.length - 1))
 				)),
 			{
-				duration: 2,
+				duration: Math.random() * 2 + 1,
 				easing: 'ease-out',
 			}
 		);
