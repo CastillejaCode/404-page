@@ -1,27 +1,49 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Slot from './Slot';
 
 export default function SlotMachine() {
 	const [arr, setArr] = useState(randomize([4, 0, 4]));
 	const [spins, setSpins] = useState(0);
+	const [finished, setFinished] = useState(false);
+	const randomDurations = Array.from(
+		{ length: 3 },
+		() => Math.random() * 2 + 1
+	);
+
+	useEffect(() => {
+		handleFinish();
+	}, []);
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
+		handleFinish();
 		if (spins > 1) setArr(randomize([2, 0, 0]));
 		else setArr(randomize());
 		setSpins(spins + 1);
 	}
 
+	function handleFinish() {
+		setFinished(false);
+		const timeout = Math.max(...randomDurations) * 1000;
+		setTimeout(() => {
+			setFinished(true);
+			console.log(123);
+		}, timeout);
+	}
+
 	return (
-		<form onSubmit={handleSubmit}>
-			<div className='slots'>
-				{arr.map((e, i) => {
-					return <Slot key={i} array={e} />;
-				})}
-			</div>
-			<button>Reset</button>
-			<p>count: {spins}</p>
-		</form>
+		<div className='container'>
+			<h1>{finished && 'sorry'}</h1>
+			<form onSubmit={handleSubmit}>
+				<div className='slots'>
+					{arr.map((e, i) => {
+						return <Slot key={i} array={e} duration={randomDurations[i]} />;
+					})}
+				</div>
+				<h2>We couldnt find that one...</h2>
+				<button>Spin Again</button>
+			</form>
+		</div>
 	);
 }
 function getRandomIntInclusive(min, max) {

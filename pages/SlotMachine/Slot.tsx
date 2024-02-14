@@ -1,11 +1,12 @@
 import { animate } from 'motion';
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 type Props = {
 	array: number[];
+	duration: number;
 };
 
-export default function Slot({ array }: Props) {
+export default function Slot({ array, duration }: Props) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -15,7 +16,7 @@ export default function Slot({ array }: Props) {
 					array.at(Math.round(progress * array.length - 1))
 				)),
 			{
-				duration: Math.random() * 2 + 1,
+				duration,
 				easing: 'ease-out',
 			}
 		);
