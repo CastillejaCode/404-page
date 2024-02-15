@@ -1,14 +1,14 @@
 import { FormEvent, useEffect, useState } from 'react';
-import Slot from './Slot';
+import Slots from './Slots';
 
 export default function SlotMachine() {
-	const [arr, setArr] = useState(randomize([4, 0, 4]));
-	const [spins, setSpins] = useState(0);
-	const [finished, setFinished] = useState(false);
-	const randomDurations = Array.from(
-		{ length: 3 },
-		() => Math.random() * 2 + 1
+	const [randomArrays, setRandomArrays] = useState(
+		createRandomArrays({ riggedNumber: 404 })
 	);
+	const [spinCount, setSpinCount] = useState(0);
+	const [spinFinished, setSpinFinished] = useState(false);
+
+	const randomDurations = createRandomDurations();
 
 	useEffect(() => {
 		handleFinish();
@@ -17,63 +17,67 @@ export default function SlotMachine() {
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		handleFinish();
-		if (spins > 1) setArr(randomize([2, 0, 0]));
-		else setArr(randomize());
-		setSpins(spins + 1);
+		handleSpin();
 	}
 
 	function handleFinish() {
-		setFinished(false);
-		const timeout = Math.max(...randomDurations) * 1000;
+		setSpinFinished(false);
+		const maxTimeout = Math.max(...randomDurations) * 1000;
 		setTimeout(() => {
-			setFinished(true);
-		}, timeout);
+			setSpinFinished(true);
+		}, maxTimeout);
+	}
+
+	function handleSpin() {
+		if (spinCount > 1)
+			setRandomArrays(createRandomArrays({ riggedNumber: 200 }));
+		else setRandomArrays(createRandomArrays());
+		setSpinCount(spinCount + 1);
 	}
 
 	return (
 		<div className='container'>
-			<h1 className={`${!finished && 'hidden'}`}>Sorry</h1>
+			<h1 className={`${!spinFinished && 'hidden'}`}>Sorry</h1>
 			<form onSubmit={handleSubmit}>
-				<div className='slots'>
-					{arr.map((e, i) => {
-						return <Slot key={i} array={e} duration={randomDurations[i]} />;
-					})}
-				</div>
-				<h2 className={`${!finished && 'hidden'}`}>
-					We couldnt find that one...
-				</h2>
+				<Slots arrays={randomArrays} durations={randomDurations} />
 				<button>Spin Again</button>
 			</form>
+			<h2 className={`${!spinFinished && 'hidden'}`}>
+				We couldnt find that one...
+			</h2>
 		</div>
 	);
 }
-function getRandomIntInclusive(min, max) {
+
+function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
+	return Array.from({ length }, () => Math.random() * (max - min) + min);
+}
+
+// Shamelessly stolen from MDN
+function getRandomIntInclusive(min: number, max: number) {
 	const minCeiled = Math.ceil(min);
 	const maxFloored = Math.floor(max);
 	return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-type Args = {
-	range: [number, number];
-	length: number;
-	last?: number;
-};
-
-function createRandomArray({ range: [start, end], length }: Args) {
-	return Array.from({ length }, () => getRandomIntInclusive(start, end));
+function createRandomArray({ min = 0, max = 9, length = 9 } = {}) {
+	return Array.from({ length }, () => getRandomIntInclusive(min, max));
 }
 
-function randomize(riggedNumbers?: number[]) {
-	const range: [number, number] = [1, 9];
-	const length = 9;
+function createRandomArrays({ riggedNumber = 0, length = 3 } = {}) {
+	let arr = Array.from({ length }, createRandomArray);
 
-	let arr = Array.from({ length: 3 }, () =>
-		createRandomArray({ range, length })
-	);
-
-	if (riggedNumbers)
+	if (riggedNumber) {
+		const numberArray = convertToNumberArray(riggedNumber);
 		arr.forEach((e, i) => {
-			arr[i].splice(length - 1, 1, riggedNumbers[i]);
+			e.pop();
+			e.push(numberArray[i]);
 		});
+	}
+
 	return arr;
+}
+
+function convertToNumberArray(numbers: number) {
+	return [...numbers.toString()].map(Number);
 }
