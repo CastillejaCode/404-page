@@ -1,25 +1,26 @@
 import { animate } from 'motion';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 type Props = {
-	array: number[];
+	arr: number[];
 	duration: number;
 };
 
-export default function Slot({ array, duration }: Props) {
+export default function Slot({ arr, duration }: Props) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		animate(
 			(progress) =>
+				// Progress goes from 0 to 1, multiplying by length - 1 to get indices
 				(ref.current.innerHTML = String(
-					array.at(Math.round(progress * array.length - 1))
+					arr.at(Math.round(progress * arr.length - 1))
 				)),
 			{
 				duration,
 				easing: 'ease-out',
 			}
 		);
-	}, [array]);
+	}, [arr]);
 	return <div ref={ref} className='slot'></div>;
 }
