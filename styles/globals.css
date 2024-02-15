@@ -6,7 +6,7 @@ body {
 
 main {
 	display: flex;
-	flex-direction: column;
+	flex-direction: columnddit;
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
@@ -56,6 +56,10 @@ ul {
 	border: 1px solid white;
 }
 
+.hidden {
+	opacity: 0;
+}
+
 .slot:hover {
 	background-color: red;
 }
@@ -84,5 +88,9 @@ button {
 }
 
 h1 {
-	transition: all 1s;
+	transition: 0.3s;
+}
+
+h2 {
+	transition: 0.5s;
 }

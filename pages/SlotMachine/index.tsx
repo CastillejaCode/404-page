@@ -27,20 +27,21 @@ export default function SlotMachine() {
 		const timeout = Math.max(...randomDurations) * 1000;
 		setTimeout(() => {
 			setFinished(true);
-			console.log(123);
 		}, timeout);
 	}
 
 	return (
 		<div className='container'>
-			<h1>{finished && 'sorry'}</h1>
+			<h1 className={`${!finished && 'hidden'}`}>Sorry</h1>
 			<form onSubmit={handleSubmit}>
 				<div className='slots'>
 					{arr.map((e, i) => {
 						return <Slot key={i} array={e} duration={randomDurations[i]} />;
 					})}
 				</div>
-				<h2>We couldnt find that one...</h2>
+				<h2 className={`${!finished && 'hidden'}`}>
+					We couldnt find that one...
+				</h2>
 				<button>Spin Again</button>
 			</form>
 		</div>
