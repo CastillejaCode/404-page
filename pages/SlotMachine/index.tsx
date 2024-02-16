@@ -45,21 +45,21 @@ export default function SlotMachine() {
 		handleFinish();
 	}
 
+	function handleSpin() {
+		const limitReached = spinCount.current >= 3;
+		setRandomArrays(
+			createRandomArrays(limitReached ? { riggedNumber: 200 } : {})
+		);
+		spinCount.current++;
+	}
+
 	function handleFinish() {
-		const duration = Math.max(...randomDurations.current);
-		console.log('duration', duration);
 		setSpinFinished(false);
+		const duration = Math.max(...randomDurations.current);
 		const timeout = setTimeout(() => {
 			setSpinFinished(true);
 			clearTimeout(timeout);
 		}, duration);
-	}
-
-	function handleSpin() {
-		if (spinCount.current > 1)
-			setRandomArrays(createRandomArrays({ riggedNumber: 200 }));
-		else setRandomArrays(createRandomArrays());
-		spinCount.current++;
 	}
 
 	return (
