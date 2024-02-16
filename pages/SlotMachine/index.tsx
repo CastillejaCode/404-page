@@ -29,9 +29,9 @@ export default function SlotMachine() {
 	const [randomArrays, setRandomArrays] = useState(
 		createRandomArrays({ riggedNumber: 404 })
 	);
-	const [spinCount, setSpinCount] = useState(0);
 	const [spinFinished, setSpinFinished] = useState(false);
 
+	const spinCount = useRef(0);
 	const randomDurations = useRef(createRandomDurations());
 
 	useEffect(() => {
@@ -56,10 +56,10 @@ export default function SlotMachine() {
 	}
 
 	function handleSpin() {
-		if (spinCount > 1)
+		if (spinCount.current > 1)
 			setRandomArrays(createRandomArrays({ riggedNumber: 200 }));
 		else setRandomArrays(createRandomArrays());
-		setSpinCount(spinCount + 1);
+		spinCount.current++;
 	}
 
 	return (
