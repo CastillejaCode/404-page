@@ -25,7 +25,7 @@ export default function Slot({ arr, duration }: Props) {
 					arr.at(Math.round(progress * arr.length - 1))
 				)),
 			{
-				duration,
+				duration: duration / 1000,
 				easing: 'ease-out',
 			}
 		);

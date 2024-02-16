@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import Slots from './Slots';
 import styled from 'styled-components';
 
@@ -32,9 +32,7 @@ export default function SlotMachine() {
 	const [spinCount, setSpinCount] = useState(0);
 	const [spinFinished, setSpinFinished] = useState(false);
 
-	const [randomDurations, setRandomDurations] = useState(
-		createRandomDurations()
-	);
+	const randomDurations = useRef(createRandomDurations());
 
 	useEffect(() => {
 		handleFinish();
@@ -42,18 +40,19 @@ export default function SlotMachine() {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		setRandomDurations(createRandomDurations());
+		randomDurations.current = createRandomDurations();
 		handleSpin();
 		handleFinish();
 	}
 
 	function handleFinish() {
-		const maxTimeout = Math.max(...randomDurations) * 1000;
-		console.log(maxTimeout);
+		const duration = Math.max(...randomDurations.current);
+		console.log('duration', duration);
 		setSpinFinished(false);
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			setSpinFinished(true);
-		}, maxTimeout);
+			clearTimeout(timeout);
+		}, duration);
 	}
 
 	function handleSpin() {
@@ -67,7 +66,7 @@ export default function SlotMachine() {
 		<Container>
 			<H1 $hidden={!spinFinished}>Sorry</H1>
 			<Form onSubmit={handleSubmit}>
-				<Slots arrays={randomArrays} durations={randomDurations} />
+				<Slots arrays={randomArrays} durations={randomDurations.current} />
 				<button>Spin Again</button>
 			</Form>
 			<H2 $hidden={!spinFinished}>We couldnt find that one...</H2>
@@ -76,7 +75,9 @@ export default function SlotMachine() {
 }
 
 function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
-	return Array.from({ length }, () => Math.random() * (max - min) + min);
+	return Array.from({ length }, () =>
+		Math.round((Math.random() * (max - min) + min) * 1000)
+	);
 }
 
 // Shamelessly stolen from MDN
