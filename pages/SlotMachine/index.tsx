@@ -1,5 +1,29 @@
 import { FormEvent, useEffect, useState } from 'react';
 import Slots from './Slots';
+import styled from 'styled-components';
+
+const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const H1 = styled.h1<{ $hidden: boolean }>`
+	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	transition: all 0.3s;
+`;
+
+const H2 = styled.h2<{ $hidden: boolean }>`
+	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	transition: all 0.3s;
+`;
+
+const Form = styled.form`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+`;
 
 export default function SlotMachine() {
 	const [randomArrays, setRandomArrays] = useState(
@@ -8,7 +32,9 @@ export default function SlotMachine() {
 	const [spinCount, setSpinCount] = useState(0);
 	const [spinFinished, setSpinFinished] = useState(false);
 
-	const randomDurations = createRandomDurations();
+	const [randomDurations, setRandomDurations] = useState(
+		createRandomDurations()
+	);
 
 	useEffect(() => {
 		handleFinish();
@@ -16,13 +42,15 @@ export default function SlotMachine() {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		handleFinish();
+		setRandomDurations(createRandomDurations());
 		handleSpin();
+		handleFinish();
 	}
 
 	function handleFinish() {
-		setSpinFinished(false);
 		const maxTimeout = Math.max(...randomDurations) * 1000;
+		console.log(maxTimeout);
+		setSpinFinished(false);
 		setTimeout(() => {
 			setSpinFinished(true);
 		}, maxTimeout);
@@ -36,16 +64,14 @@ export default function SlotMachine() {
 	}
 
 	return (
-		<div className='container'>
-			<h1 className={`${!spinFinished && 'hidden'}`}>Sorry</h1>
-			<form onSubmit={handleSubmit}>
+		<Container>
+			<H1 $hidden={!spinFinished}>Sorry</H1>
+			<Form onSubmit={handleSubmit}>
 				<Slots arrays={randomArrays} durations={randomDurations} />
 				<button>Spin Again</button>
-			</form>
-			<h2 className={`${!spinFinished && 'hidden'}`}>
-				We couldnt find that one...
-			</h2>
-		</div>
+			</Form>
+			<H2 $hidden={!spinFinished}>We couldnt find that one...</H2>
+		</Container>
 	);
 }
 

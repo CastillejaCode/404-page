@@ -1,5 +1,13 @@
 import { animate } from 'motion';
 import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+
+const Container = styled.div`
+	display: grid;
+	place-content: center;
+	padding: 1rem;
+	border: 1px solid white;
+`;
 
 type Props = {
 	arr: number[];
@@ -22,5 +30,5 @@ export default function Slot({ arr, duration }: Props) {
 			}
 		);
 	}, [arr]);
-	return <div ref={ref} className='slot'></div>;
+	return <Container ref={ref}></Container>;
 }
