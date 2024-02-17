@@ -7,14 +7,7 @@ const Form = styled.form`
 	flex-direction: column;
 	align-items: center;
 	padding: 2rem;
-`;
-
-const H1 = styled.h1<{ $hidden: boolean }>`
-	display: flex;
-	align-self: start;
-	font-size: 2.25rem;
-	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
-	transition: opacity 0.3s;
+	gap: 1rem;
 `;
 
 const Container = styled.div`
@@ -77,9 +70,8 @@ export default function SlotMachine() {
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Container>
-				<H1 $hidden={!spinFinished}>Sorry</H1>
 				<Slots arrays={randomArrays} durations={randomDurations.current} />
-				<H2 $hidden={!spinFinished}>We couldnt find that one...</H2>
+				<H2 $hidden={!spinFinished}>Sorry, we couldn't find that one</H2>
 			</Container>
 			<Button $hidden={!spinFinished}>Spin Again</Button>
 		</Form>
