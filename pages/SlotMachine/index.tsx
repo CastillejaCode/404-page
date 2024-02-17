@@ -16,17 +16,19 @@ const Container = styled.div`
 	flex-direction: column;
 	gap: 3rem;
 `;
-const H2 = styled.h2<{ $hidden: boolean }>`
+const H2 = styled.h2<{ $shown: boolean }>`
 	font-size: 1.5rem;
 	text-align: center;
 	line-height: 2.25rem;
-	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	opacity: 0;
+	opacity: ${({ $shown }) => $shown && '1'};
 	transition: opacity 0.3s;
 `;
 
-const Button = styled.button<{ $hidden: boolean }>`
+export const Button = styled.button<{ $shown: boolean }>`
 	font-size: 2rem;
-	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	opacity: 0;
+	opacity: ${({ $shown }) => $shown && '1'};
 	transition: opacity 0.3s;
 `;
 
@@ -71,9 +73,9 @@ export default function SlotMachine() {
 		<Form onSubmit={handleSubmit}>
 			<Container>
 				<Slots arrays={randomArrays} durations={randomDurations.current} />
-				<H2 $hidden={!spinFinished}>Sorry, we couldn't find that one</H2>
+				<H2 $shown={spinFinished}>Sorry, we couldn't find that one.</H2>
 			</Container>
-			<Button $hidden={!spinFinished}>Spin Again</Button>
+			<Button $shown={spinFinished}>Spin Again</Button>
 		</Form>
 	);
 }
