@@ -2,27 +2,39 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import Slots from './Slots';
 import styled from 'styled-components';
 
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-`;
-
-const H1 = styled.h1<{ $hidden: boolean }>`
-	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
-	transition: all 0.3s;
-`;
-
-const H2 = styled.h2<{ $hidden: boolean }>`
-	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
-	transition: all 0.3s;
-`;
-
 const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 1rem;
+	padding: 2rem;
+`;
+
+const H1 = styled.h1<{ $hidden: boolean }>`
+	display: flex;
+	align-self: start;
+	font-size: 2.25rem;
+	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	transition: opacity 0.3s;
+`;
+
+const Container = styled.div`
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: 3rem;
+`;
+const H2 = styled.h2<{ $hidden: boolean }>`
+	font-size: 1.5rem;
+	text-align: center;
+	line-height: 2.25rem;
+	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	transition: opacity 0.3s;
+`;
+
+const Button = styled.button<{ $hidden: boolean }>`
+	font-size: 2rem;
+	opacity: ${({ $hidden }) => ($hidden ? '0' : '1')};
+	transition: opacity 0.3s;
 `;
 
 export default function SlotMachine() {
@@ -63,14 +75,14 @@ export default function SlotMachine() {
 	}
 
 	return (
-		<Container>
-			<H1 $hidden={!spinFinished}>Sorry</H1>
-			<Form onSubmit={handleSubmit}>
+		<Form onSubmit={handleSubmit}>
+			<Container>
+				<H1 $hidden={!spinFinished}>Sorry</H1>
 				<Slots arrays={randomArrays} durations={randomDurations.current} />
-				<button>Spin Again</button>
-			</Form>
-			<H2 $hidden={!spinFinished}>We couldnt find that one...</H2>
-		</Container>
+				<H2 $hidden={!spinFinished}>We couldnt find that one...</H2>
+			</Container>
+			<Button $hidden={!spinFinished}>Spin Again</Button>
+		</Form>
 	);
 }
 

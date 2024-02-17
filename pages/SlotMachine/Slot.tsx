@@ -3,10 +3,8 @@ import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	display: grid;
-	place-content: center;
-	padding: 1rem;
-	border: 1px solid white;
+	border-radius: 1rem;
+	font-size: clamp(3rem, 10vw, 6rem);
 `;
 
 type Props = {
