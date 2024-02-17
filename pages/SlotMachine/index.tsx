@@ -1,6 +1,7 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import Slots from './Slots';
 import styled from 'styled-components';
+import Coins from './Coins';
 
 const Form = styled.form`
 	display: flex;
@@ -78,6 +79,7 @@ export default function SlotMachine() {
 
 	return (
 		<Form onSubmit={handleSubmit}>
+			<Coins />
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>Sorry, we couldn&apos;t find that one.</H2>
 			<Button disabled={!spinFinished}>Spin Again</Button>
@@ -85,7 +87,7 @@ export default function SlotMachine() {
 	);
 }
 
-function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
+export function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
 	return Array.from({ length }, () =>
 		Math.round((Math.random() * (max - min) + min) * 1000)
 	);
