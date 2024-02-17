@@ -1,7 +1,6 @@
-import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-const Button = styled.button``;
+import { Button } from './SlotMachine';
 
 export default function Home() {
 	const router = useRouter();

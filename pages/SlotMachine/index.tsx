@@ -6,16 +6,28 @@ const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 2rem;
-	gap: 1rem;
+	gap: 2.5rem;
 `;
 
-const Container = styled.div`
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	gap: 3rem;
+export const Button = styled.button`
+	font-family: 'Press Start 2P';
+	font-size: 1.25rem;
+	color: inherit;
+	background-color: #209cee;
+	:hover {
+		background-color: #0c83d1;
+	}
+	:disabled {
+		filter: grayscale(1);
+		pointer-events: none;
+	}
+	border: 4px solid #244c73;
+	box-shadow: inset -4px -4px #006bb3;
+	padding: 1rem;
+	transition: filter 0.3s;
+	cursor: pointer;
 `;
+
 const H2 = styled.h2<{ $shown: boolean }>`
 	font-size: 1.5rem;
 	text-align: center;
@@ -23,13 +35,7 @@ const H2 = styled.h2<{ $shown: boolean }>`
 	opacity: 0;
 	opacity: ${({ $shown }) => $shown && '1'};
 	transition: opacity 0.3s;
-`;
-
-export const Button = styled.button<{ $shown: boolean }>`
-	font-size: 2rem;
-	opacity: 0;
-	opacity: ${({ $shown }) => $shown && '1'};
-	transition: opacity 0.3s;
+	padding: 0 2rem;
 `;
 
 export default function SlotMachine() {
@@ -47,6 +53,7 @@ export default function SlotMachine() {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
+		console.log(123);
 		randomDurations.current = createRandomDurations();
 		handleSpin();
 		handleFinish();
@@ -71,11 +78,9 @@ export default function SlotMachine() {
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			<Container>
-				<Slots arrays={randomArrays} durations={randomDurations.current} />
-				<H2 $shown={spinFinished}>Sorry, we couldn't find that one.</H2>
-			</Container>
-			<Button $shown={spinFinished}>Spin Again</Button>
+			<Slots arrays={randomArrays} durations={randomDurations.current} />
+			<H2 $shown={spinFinished}>Sorry, we couldn&apos;t find that one.</H2>
+			<Button disabled={!spinFinished}>Spin Again</Button>
 		</Form>
 	);
 }
