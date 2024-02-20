@@ -1,12 +1,13 @@
+import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Coins from '../Coins';
-import Slots from '../Slots';
 import {
 	convertToNumberArray,
 	createRandomDurations,
 	getRandomIntInclusive,
 } from '../../utils';
+import Coins from '../Coins';
+import Slots from '../Slots';
 
 const Form = styled.form`
 	display: flex;
@@ -49,11 +50,13 @@ type Props = {
 };
 
 export default function SlotMachine({ spinLimit }: Props) {
+	const router = useRouter();
 	const [randomArrays, setRandomArrays] = useState(
 		createRandomArrays({ riggedNumber: 404 })
 	);
 	const [spinFinished, setSpinFinished] = useState(false);
 	const [spinCount, setSpinCount] = useState(0);
+	const limitReached = spinCount === spinLimit;
 
 	const randomDurations = useRef(createRandomDurations());
 
@@ -63,9 +66,13 @@ export default function SlotMachine({ spinLimit }: Props) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		randomDurations.current = createRandomDurations();
-		handleSpin();
-		handleFinish();
+		if (limitReached) {
+			router.back();
+		} else {
+			randomDurations.current = createRandomDurations();
+			handleSpin();
+			handleFinish();
+		}
 	}
 
 	function handleSpin() {
@@ -85,10 +92,16 @@ export default function SlotMachine({ spinLimit }: Props) {
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			{spinCount >= spinLimit && spinFinished && <Coins />}
+			{limitReached && spinFinished && <Coins />}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
-			<H2 $shown={spinFinished}>Sorry, we couldn&apos;t find that one.</H2>
-			<Button disabled={!spinFinished}>Spin Again</Button>
+			<H2 $shown={spinFinished}>
+				{limitReached
+					? 'Winner Winner, Chicken Dinner!'
+					: "Sorry, we couldn't find that one."}
+			</H2>
+			<Button disabled={!spinFinished}>
+				{limitReached ? 'Go Back' : 'Spin Again'}
+			</Button>
 		</Form>
 	);
 }
