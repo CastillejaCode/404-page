@@ -9,8 +9,8 @@ const DynamicCoin = dynamic(() => import('./Coin'), {
 export default function Coins() {
 	const randomDurations = createRandomDurations({
 		min: 1,
-		max: 3,
-		length: 20,
+		max: 2.5,
+		length: 25,
 	});
 	return randomDurations.map((duration, i) => {
 		return <DynamicCoin key={i} duration={duration / 1000} />;

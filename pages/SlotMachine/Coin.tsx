@@ -17,16 +17,16 @@ type Props = {
 export default function Coin({ duration }: Props) {
 	const coinRef = useRef<HTMLImageElement>(null);
 	const xOffset = useRef(Math.round(Math.random() * window.innerWidth));
-	const height = Math.random() * 48;
+	const height = Math.random() * 48 + 48;
 
 	useEffect(() => {
 		animate(
 			coinRef.current,
 			{
 				y: window.innerHeight + height,
-				// x: ((Math.random() * 2 - 1) * window.innerWidth) / 2,
+				x: ((Math.random() * 2 - 1) * window.innerWidth) / 2,
 			},
-			{ duration, easing: [0.33333, 0, 0.66667, 0.33333] }
+			{ duration, easing: 'ease-in' }
 		);
 	}, []);
 
@@ -35,7 +35,7 @@ export default function Coin({ duration }: Props) {
 			$top={height}
 			$left={xOffset.current}
 			ref={coinRef}
-			src='https://www.codedex.io/images/coin-cropped.png'
+			src='/coin-cropped.png'
 			alt='coin'
 		/>
 	);
