@@ -79,7 +79,7 @@ export default function SlotMachine() {
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			<Coins />
+			{!spinFinished && <Coins />}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>Sorry, we couldn&apos;t find that one.</H2>
 			<Button disabled={!spinFinished}>Spin Again</Button>
