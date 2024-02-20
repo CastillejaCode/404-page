@@ -39,13 +39,17 @@ const H2 = styled.h2<{ $shown: boolean }>`
 	padding: 0 2rem;
 `;
 
-export default function SlotMachine() {
+type Props = {
+	spinLimit: number;
+};
+
+export default function SlotMachine({ spinLimit }: Props) {
 	const [randomArrays, setRandomArrays] = useState(
 		createRandomArrays({ riggedNumber: 404 })
 	);
 	const [spinFinished, setSpinFinished] = useState(false);
+	const [spinCount, setSpinCount] = useState(0);
 
-	const spinCount = useRef(0);
 	const randomDurations = useRef(createRandomDurations());
 
 	useEffect(() => {
@@ -54,18 +58,14 @@ export default function SlotMachine() {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		console.log(123);
 		randomDurations.current = createRandomDurations();
 		handleSpin();
 		handleFinish();
 	}
 
 	function handleSpin() {
-		const limitReached = spinCount.current >= 3;
-		setRandomArrays(
-			createRandomArrays(limitReached ? { riggedNumber: 200 } : {})
-		);
-		spinCount.current++;
+		const isRigged = spinCount >= spinLimit - 1 ? { riggedNumber: 200 } : {};
+		setRandomArrays(createRandomArrays(isRigged));
 	}
 
 	function handleFinish() {
@@ -73,13 +73,14 @@ export default function SlotMachine() {
 		const duration = Math.max(...randomDurations.current);
 		const timeout = setTimeout(() => {
 			setSpinFinished(true);
+			setSpinCount(spinCount + 1);
 			clearTimeout(timeout);
 		}, duration);
 	}
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			{!spinFinished && <Coins />}
+			{spinCount >= spinLimit && spinFinished && <Coins />}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>Sorry, we couldn&apos;t find that one.</H2>
 			<Button disabled={!spinFinished}>Spin Again</Button>
