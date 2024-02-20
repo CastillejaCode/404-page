@@ -10,7 +10,7 @@ export default function Coins() {
 	const randomDurations = createRandomDurations({
 		min: 1,
 		max: 2.5,
-		length: 25,
+		length: 50,
 	});
 	return randomDurations.map((duration, i) => {
 		return <DynamicCoin key={i} duration={duration / 1000} />;
