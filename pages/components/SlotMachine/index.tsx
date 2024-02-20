@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Coins from '../Coins';
-import Slots from '../Slots';
-import { convertToNumberArray, createRandomDurations } from '../utils';
+import Slots from '../../Slots';
+import { convertToNumberArray, createRandomDurations } from '../../utils';
 
 const Form = styled.form`
 	display: flex;
