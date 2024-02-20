@@ -1,9 +1,18 @@
 import { createRandomDurations } from '.';
-import Coin from './Coin';
+
+import dynamic from 'next/dynamic';
+
+const DynamicCoin = dynamic(() => import('./Coin'), {
+	ssr: false,
+});
 
 export default function Coins() {
-	const randomDurations = createRandomDurations({ min: 1, max: 3, length: 5 });
+	const randomDurations = createRandomDurations({
+		min: 1,
+		max: 3,
+		length: 20,
+	});
 	return randomDurations.map((duration, i) => {
-		return <Coin key={i} duration={duration / 1000} />;
+		return <DynamicCoin key={i} duration={duration / 1000} />;
 	});
 }

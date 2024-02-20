@@ -1,12 +1,12 @@
-import { animate, glide } from 'motion';
-import { useEffect, useRef, useState } from 'react';
+import { animate } from 'motion';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const FallingCoin = styled.img<{ $left: string }>`
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: ${({ $left }) => $left};
-	width: 5rem;
+	width: 3rem;
 	aspect-ratio: 1;
 `;
 
@@ -15,15 +15,21 @@ type Props = {
 };
 
 export default function Coin({ duration }: Props) {
-	const [left, useLeft] = useState(`${Math.round(Math.random() * 300)}px`);
-	const coinRef = useRef<HTMLImageElement>();
+	const coinRef = useRef<HTMLImageElement>(null);
+	const xOffset = `${Math.round(Math.random() * window.innerWidth)}px`;
+	console.log(xOffset);
+
 	useEffect(() => {
-		animate(coinRef.current, { y: 1000 }, { duration, easing: 'ease-in' });
+		animate(
+			coinRef.current,
+			{ y: window.innerHeight },
+			{ duration, easing: 'ease-in' }
+		);
 	}, []);
 
 	return (
 		<FallingCoin
-			$left={left}
+			$left={xOffset}
 			ref={coinRef}
 			src='https://www.codedex.io/images/coin-cropped.png'
 			alt='coin'
