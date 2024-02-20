@@ -1,7 +1,8 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import Slots from './Slots';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Coins from './Coins';
+import Coins from '../Coins';
+import Slots from '../Slots';
+import { convertToNumberArray, createRandomDurations } from '../utils';
 
 const Form = styled.form`
 	display: flex;
@@ -88,12 +89,6 @@ export default function SlotMachine({ spinLimit }: Props) {
 	);
 }
 
-export function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
-	return Array.from({ length }, () =>
-		Math.round((Math.random() * (max - min) + min) * 1000)
-	);
-}
-
 // Shamelessly stolen from MDN
 function getRandomIntInclusive(min: number, max: number) {
 	const minCeiled = Math.ceil(min);
@@ -117,8 +112,4 @@ function createRandomArrays({ riggedNumber = 0, length = 3 } = {}) {
 	}
 
 	return arr;
-}
-
-function convertToNumberArray(numbers: number) {
-	return [...numbers.toString()].map(Number);
 }

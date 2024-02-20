@@ -1,4 +1,4 @@
-import { createRandomDurations } from '.';
+import { createRandomDurations } from '../SlotMachine';
 
 import dynamic from 'next/dynamic';
 
