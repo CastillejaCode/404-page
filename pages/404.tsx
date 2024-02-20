@@ -1,7 +1,9 @@
 import SlotMachine from './components/SlotMachine';
+import { getRandomIntInclusive } from './utils';
 
 const config = {
-	spinLimit: 3,
+	// A "winning" spin will be within the range
+	spinLimit: getRandomIntInclusive(3, 5),
 };
 
 export default function Custom404() {
