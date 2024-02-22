@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
 	convertToNumberArray,
 	createRandomDurations,
+	dropCoins,
 	getRandomIntInclusive,
 } from '../../utils';
 import Coins from '../Coins';
@@ -11,6 +12,7 @@ import Slots from '../Slots';
 
 const Form = styled.form`
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	align-items: center;
 	gap: 2.5rem;
@@ -47,9 +49,13 @@ const H2 = styled.h2<{ $shown: boolean }>`
 
 type Props = {
 	spinLimit: number;
+	messages: {
+		win: string;
+		lose: string;
+	};
 };
 
-export default function SlotMachine({ spinLimit }: Props) {
+export default function SlotMachine({ spinLimit, messages }: Props) {
 	const router = useRouter();
 	const [randomArrays, setRandomArrays] = useState(
 		createRandomArrays({ riggedNumber: 404 })
@@ -66,6 +72,7 @@ export default function SlotMachine({ spinLimit }: Props) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
+		dropCoins();
 		if (limitReached) {
 			router.back();
 		} else {
@@ -95,13 +102,17 @@ export default function SlotMachine({ spinLimit }: Props) {
 			{limitReached && spinFinished && <Coins />}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>
-				{limitReached
-					? 'Winner Winner, Chicken Dinner!'
-					: "Sorry, we couldn't find that one."}
+				{limitReached ? messages.win : messages.lose}
 			</H2>
-			<Button disabled={!spinFinished}>
-				{limitReached ? 'Go Back' : 'Spin Again'}
-			</Button>
+			<div>
+				{!limitReached && (
+					<>
+						<Button disabled={!spinFinished}>Spin Again</Button>
+						<p>or</p>
+					</>
+				)}
+				<Button type='button'>Go Back</Button>
+			</div>
 		</Form>
 	);
 }
