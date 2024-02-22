@@ -8,7 +8,7 @@ const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
-	output: 'export',
+	output: 'standalone',
 };
 
 module.exports = nextConfig;
