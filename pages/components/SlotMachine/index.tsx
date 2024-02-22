@@ -69,7 +69,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	);
 	const [spinFinished, setSpinFinished] = useState(false);
 	const [spinCount, setSpinCount] = useState(0);
-	const limitReached = spinCount === spinLimit;
+	const limitReached = spinCount >= spinLimit;
 
 	const randomDurations = useRef(createRandomDurations());
 
@@ -81,7 +81,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 		e.preventDefault();
 		dropCoins();
 		if (limitReached) {
-			router.back();
+			dropCoins();
 		} else {
 			randomDurations.current = createRandomDurations();
 			handleSpin();
@@ -112,9 +112,13 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 				{limitReached ? messages.win : messages.lose}
 			</H2>
 			<Buttons>
-				<Button disabled={!spinFinished}>Spin Again</Button>
+				<Button disabled={!spinFinished}>
+					{limitReached ? '🪙 🪙 🪙' : 'Spin Again'}
+				</Button>
 				<p>or</p>
-				<Button type='button'>Go Back</Button>
+				<Button type='button' onClick={() => router.back()}>
+					Go Back
+				</Button>
 			</Buttons>
 		</Form>
 	);
