@@ -8,7 +8,6 @@ import {
 	getRandomIntInclusive,
 } from '../../utils';
 import Slots from '../Slots';
-import Image from 'next/image';
 
 const Form = styled.form`
 	display: flex;
@@ -23,6 +22,11 @@ export const Button = styled.button`
 	font-size: 1.25rem;
 	color: inherit;
 	background-color: #209cee;
+	border: 4px solid #244c73;
+	box-shadow: inset -4px -4px #006bb3;
+	padding: 1rem;
+	transition: filter 0.3s;
+	cursor: pointer;
 	:hover {
 		background-color: #0c83d1;
 	}
@@ -30,11 +34,6 @@ export const Button = styled.button`
 		filter: grayscale(1);
 		pointer-events: none;
 	}
-	border: 4px solid #244c73;
-	box-shadow: inset -4px -4px #006bb3;
-	padding: 1rem;
-	transition: filter 0.3s;
-	cursor: pointer;
 `;
 
 const Buttons = styled.div`
@@ -58,7 +57,7 @@ type Props = {
 	spinLimit: number;
 	messages: {
 		win: string;
-		lose: string;
+		lose: string[];
 	};
 };
 
@@ -69,6 +68,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	);
 	const [spinFinished, setSpinFinished] = useState(false);
 	const [spinCount, setSpinCount] = useState(0);
+	const [loseMessage, setLoseMessage] = useState(messages.lose[0]);
 	const limitReached = spinCount >= spinLimit;
 
 	const randomDurations = useRef(createRandomDurations());
@@ -100,23 +100,24 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 			if (spinCount === spinLimit - 1) dropCoins();
 			setSpinFinished(true);
 			setSpinCount(spinCount + 1);
+			setLoseMessage(getRandomMessage(messages.lose));
 			clearTimeout(timeout);
 		}, duration);
+	}
+
+	function getRandomMessage(messages: string[]) {
+		const randomNum = Math.round(Math.random() * (messages.length - 1));
+		console.log(randomNum);
+		return messages[randomNum];
 	}
 
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
-			<H2 $shown={spinFinished}>
-				{limitReached ? messages.win : messages.lose}
-			</H2>
+			<H2 $shown={spinFinished}>{limitReached ? messages.win : loseMessage}</H2>
 			<Buttons>
 				<Button disabled={!spinFinished}>
-					{limitReached ? (
-						<Image src='/coin-cropped.png' alt='coin' width={48} height={48} />
-					) : (
-						'Spin Again'
-					)}
+					{limitReached ? 'Drop Coin' : 'Spin Again'}
 				</Button>
 				<p>or</p>
 				<Button type='button' onClick={() => router.back()}>

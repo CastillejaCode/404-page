@@ -5,7 +5,13 @@ const config = {
 	// A "winning" spin will be within the range
 	spinLimit: getRandomIntInclusive(3, 5),
 	messages: {
-		lose: "Sorry, we couldn't find that one.",
+		lose: [
+			"Sorry, we couldn't find that one.",
+			"Couldn't find that one.",
+			"We'll look harder next time, sorry.",
+			'Nope, not here.',
+			"It's somewhere here, I know it...",
+		],
 		win: 'Winner Winner, Chicken Dinner!',
 	},
 };
