@@ -8,6 +8,7 @@ import {
 	getRandomIntInclusive,
 } from '../../utils';
 import Slots from '../Slots';
+import Image from 'next/image';
 
 const Form = styled.form`
 	display: flex;
@@ -105,14 +106,17 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			{/* {limitReached && spinFinished && <Coins />} */}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>
 				{limitReached ? messages.win : messages.lose}
 			</H2>
 			<Buttons>
 				<Button disabled={!spinFinished}>
-					{limitReached ? '🪙' : 'Spin Again'}
+					{limitReached ? (
+						<Image src='/coin-cropped.png' alt='coin' width={48} height={48} />
+					) : (
+						'Spin Again'
+					)}
 				</Button>
 				<p>or</p>
 				<Button type='button' onClick={() => router.back()}>
