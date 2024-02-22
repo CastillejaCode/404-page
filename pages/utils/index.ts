@@ -2,9 +2,15 @@ import { animate } from 'motion';
 
 // Numbers //
 
-export function createRandomDurations({ min = 1, max = 3, length = 3 } = {}) {
+export function createRandomDurations({
+	minDuration = 1,
+	maxDuration = 3,
+	length = 3,
+} = {}) {
 	return Array.from({ length }, () =>
-		Math.round((Math.random() * (max - min) + min) * 1000)
+		Math.round(
+			(Math.random() * (maxDuration - minDuration) + minDuration) * 1000
+		)
 	);
 }
 
@@ -21,16 +27,30 @@ export function getRandomIntInclusive(min: number, max: number) {
 
 // Coins //
 
-export function dropCoins({ min = 1, max = 2, length = 50 } = {}) {
+// Increase heightFactor to increase y-axis variability
+// Increase spreadfactor to decrease x-axis variability
+export function dropCoins({
+	minDuration = 1,
+	maxDuration = 2,
+	coins = 50,
+	heightFactor = 2,
+	spreadFactor = 4,
+} = {}) {
 	const randomDurations = createRandomDurations({
-		min,
-		max,
-		length,
+		minDuration,
+		maxDuration,
+		length: coins,
 	});
-	randomDurations.forEach((duration) => dropCoin(duration));
+	randomDurations.forEach((duration) =>
+		dropCoin(duration, heightFactor, spreadFactor)
+	);
 }
 
-function dropCoin(duration: number) {
+function dropCoin(
+	duration: number,
+	heightFactor: number,
+	spreadFactor: number
+) {
 	const coin = document.createElement('img');
 	coin.classList.add('coin');
 
@@ -45,7 +65,7 @@ function dropCoin(duration: number) {
 	form.insertAdjacentElement('beforeend', coin);
 
 	const height = 48;
-	const yOffset = Math.random() * (2 * height) + height;
+	const yOffset = Math.random() * (heightFactor * height) + height;
 	coin.style.height = `${height}px`;
 	coin.style.top = `-${yOffset}px`;
 
@@ -57,7 +77,7 @@ function dropCoin(duration: number) {
 		{
 			y: window.innerHeight + yOffset,
 			// Increase last number to decrease spread
-			x: ((Math.random() * 2 - 1) * window.innerWidth) / 4,
+			x: ((Math.random() * 2 - 1) * window.innerWidth) / spreadFactor,
 		},
 		{
 			// The seconds / milliseconds divide continues

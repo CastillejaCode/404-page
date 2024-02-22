@@ -64,7 +64,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (limitReached) {
-			dropCoins({ length: 1 });
+			dropCoins({ coins: 1 });
 		} else {
 			randomDurations.current = createRandomDurations();
 			handleSpin();
@@ -81,7 +81,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 		setSpinFinished(false);
 		const duration = Math.max(...randomDurations.current);
 		const timeout = setTimeout(() => {
-			if (limitReachedMinusOne) dropCoins();
+			if (limitReachedMinusOne) dropCoins({ heightFactor: 10 });
 			setSpinFinished(true);
 			setSpinCount(spinCount + 1);
 			setLoseMessage(getRandomMessage(messages.lose));
