@@ -21,7 +21,7 @@ export function getRandomIntInclusive(min: number, max: number) {
 
 // Coins //
 
-export function dropCoins({ min = 1, max = 2, length = 25 } = {}) {
+export function dropCoins({ min = 1, max = 2, length = 50 } = {}) {
 	const randomDurations = createRandomDurations({
 		min,
 		max,
@@ -45,7 +45,7 @@ function dropCoin(duration: number) {
 	form.insertAdjacentElement('beforeend', coin);
 
 	const height = 48;
-	const yOffset = Math.random() * height + height;
+	const yOffset = Math.random() * (2 * height) + height;
 	coin.style.height = `${height}px`;
 	coin.style.top = `-${yOffset}px`;
 
@@ -57,7 +57,7 @@ function dropCoin(duration: number) {
 		{
 			y: window.innerHeight + yOffset,
 			// Increase last number to decrease spread
-			x: ((Math.random() * 2 - 1) * window.innerWidth) / 3,
+			x: ((Math.random() * 2 - 1) * window.innerWidth) / 4,
 		},
 		{
 			// The seconds / milliseconds divide continues
