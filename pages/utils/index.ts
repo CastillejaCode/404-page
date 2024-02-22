@@ -33,7 +33,7 @@ function dropCoin(duration: number) {
 	coin.setAttribute('alt', 'coin');
 
 	const form = document.querySelector('form');
-	form.insertAdjacentElement('afterbegin', coin);
+	form.insertAdjacentElement('beforeend', coin);
 
 	const height = 48;
 	const yOffset = Math.random() * height + height;
