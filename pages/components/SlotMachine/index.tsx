@@ -7,7 +7,6 @@ import {
 	dropCoins,
 	getRandomIntInclusive,
 } from '../../utils';
-import Coins from '../Coins';
 import Slots from '../Slots';
 
 const Form = styled.form`
@@ -79,9 +78,8 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		dropCoins();
 		if (limitReached) {
-			dropCoins();
+			dropCoins({ length: 1 });
 		} else {
 			randomDurations.current = createRandomDurations();
 			handleSpin();
@@ -98,6 +96,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 		setSpinFinished(false);
 		const duration = Math.max(...randomDurations.current);
 		const timeout = setTimeout(() => {
+			if (spinCount === spinLimit - 1) dropCoins();
 			setSpinFinished(true);
 			setSpinCount(spinCount + 1);
 			clearTimeout(timeout);
@@ -113,7 +112,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 			</H2>
 			<Buttons>
 				<Button disabled={!spinFinished}>
-					{limitReached ? '🪙 🪙 🪙' : 'Spin Again'}
+					{limitReached ? '🪙' : 'Spin Again'}
 				</Button>
 				<p>or</p>
 				<Button type='button' onClick={() => router.back()}>
