@@ -25,13 +25,11 @@ type Props = {
 
 export default function Slots({ arrays, durations }: Props) {
 	return (
-		<>
-			<SlotsContainer>
-				{arrays.map((e, i) => {
-					return <Slot key={i} arr={e} duration={durations[i]} />;
-				})}
-				<Span>Spin to Win</Span>
-			</SlotsContainer>
-		</>
+		<SlotsContainer>
+			{arrays.map((e, i) => {
+				return <Slot key={i} arr={e} duration={durations[i]} />;
+			})}
+			<Span>Spin to Win</Span>
+		</SlotsContainer>
 	);
 }

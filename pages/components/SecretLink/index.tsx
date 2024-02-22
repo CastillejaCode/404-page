@@ -15,7 +15,6 @@ export default function SecretLink() {
 		let pressedKeys = '';
 		document.addEventListener('keydown', (e: KeyboardEvent) => {
 			pressedKeys += e.key;
-			console.log(pressedKeys);
 			if (pressedKeys === code) callback();
 			if (!code.includes(pressedKeys)) pressedKeys = '';
 		});

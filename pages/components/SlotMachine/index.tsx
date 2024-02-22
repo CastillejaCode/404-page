@@ -11,19 +11,12 @@ import Slots from '../Slots';
 import SecretLink from '../SecretLink';
 import { Button } from '../..';
 
-const Form = styled.form`
+const Section = styled.section`
 	display: flex;
-	flex: 1;
 	flex-direction: column;
+	flex: 1;
 	align-items: center;
 	gap: 2.5rem;
-`;
-
-const Buttons = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
 `;
 
 const H2 = styled.h2<{ $shown: boolean }>`
@@ -33,7 +26,14 @@ const H2 = styled.h2<{ $shown: boolean }>`
 	opacity: 0;
 	opacity: ${({ $shown }) => $shown && '1'};
 	transition: opacity 0.3s;
-	padding: 0 2rem;
+	padding: 0 2rem 1rem;
+`;
+
+const Form = styled.form`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
 `;
 
 type Props = {
@@ -53,6 +53,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	const [spinCount, setSpinCount] = useState(0);
 	const [loseMessage, setLoseMessage] = useState(messages.lose[0]);
 	const limitReached = spinCount >= spinLimit;
+	const limitReachedMinusOne = spinCount === spinLimit - 1;
 
 	const randomDurations = useRef(createRandomDurations());
 
@@ -72,7 +73,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	}
 
 	function handleSpin() {
-		const isRigged = spinCount >= spinLimit - 1 ? { riggedNumber: 200 } : {};
+		const isRigged = limitReachedMinusOne ? { riggedNumber: 200 } : {};
 		setRandomArrays(createRandomArrays(isRigged));
 	}
 
@@ -80,7 +81,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 		setSpinFinished(false);
 		const duration = Math.max(...randomDurations.current);
 		const timeout = setTimeout(() => {
-			if (spinCount === spinLimit - 1) dropCoins();
+			if (limitReachedMinusOne) dropCoins();
 			setSpinFinished(true);
 			setSpinCount(spinCount + 1);
 			setLoseMessage(getRandomMessage(messages.lose));
@@ -90,29 +91,24 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 
 	function getRandomMessage(messages: string[]) {
 		const randomNum = Math.round(Math.random() * (messages.length - 1));
-		console.log(randomNum);
 		return messages[randomNum];
 	}
 
 	return (
-		<section>
+		<Section>
 			<SecretLink />
+			<Slots arrays={randomArrays} durations={randomDurations.current} />
+			<H2 $shown={spinFinished}>{limitReached ? messages.win : loseMessage}</H2>
 			<Form onSubmit={handleSubmit}>
-				<Slots arrays={randomArrays} durations={randomDurations.current} />
-				<H2 $shown={spinFinished}>
-					{limitReached ? messages.win : loseMessage}
-				</H2>
-				<Buttons>
-					<Button disabled={!spinFinished}>
-						{limitReached ? 'Drop Coin' : 'Spin Again'}
-					</Button>
-					<p>or</p>
-					<Button type='button' onClick={() => router.back()}>
-						Go Back
-					</Button>
-				</Buttons>
+				<Button disabled={!spinFinished}>
+					{limitReached ? 'Drop Coin' : 'Spin Again'}
+				</Button>
+				<p>or</p>
+				<Button type='button' onClick={() => router.back()}>
+					Go Back
+				</Button>
 			</Form>
-		</section>
+		</Section>
 	);
 }
 

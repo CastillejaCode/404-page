@@ -13,13 +13,13 @@ type Props = {
 };
 
 export default function Slot({ arr, duration }: Props) {
-	const ref = useRef<HTMLDivElement>(null);
+	const slotRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		animate(
 			(progress) =>
 				// Progress goes from 0 to 1, multiplying by length - 1 to get indices
-				(ref.current.innerHTML = String(
+				(slotRef.current.innerHTML = String(
 					arr.at(Math.round(progress * arr.length - 1))
 				)),
 			{
@@ -28,5 +28,5 @@ export default function Slot({ arr, duration }: Props) {
 			}
 		);
 	}, [arr]);
-	return <Container ref={ref}></Container>;
+	return <Container ref={slotRef}></Container>;
 }
