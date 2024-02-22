@@ -37,6 +37,13 @@ export const Button = styled.button`
 	cursor: pointer;
 `;
 
+const Buttons = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+`;
+
 const H2 = styled.h2<{ $shown: boolean }>`
 	font-size: 1.5rem;
 	text-align: center;
@@ -99,20 +106,16 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			{limitReached && spinFinished && <Coins />}
+			{/* {limitReached && spinFinished && <Coins />} */}
 			<Slots arrays={randomArrays} durations={randomDurations.current} />
 			<H2 $shown={spinFinished}>
 				{limitReached ? messages.win : messages.lose}
 			</H2>
-			<div>
-				{!limitReached && (
-					<>
-						<Button disabled={!spinFinished}>Spin Again</Button>
-						<p>or</p>
-					</>
-				)}
+			<Buttons>
+				<Button disabled={!spinFinished}>Spin Again</Button>
+				<p>or</p>
 				<Button type='button'>Go Back</Button>
-			</div>
+			</Buttons>
 		</Form>
 	);
 }
