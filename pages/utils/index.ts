@@ -53,5 +53,5 @@ function dropCoin(duration: number) {
 			duration: duration / 1000,
 			easing: 'ease-in',
 		}
-	);
+	).finished.then(() => coin.remove());
 }
