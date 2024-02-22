@@ -8,6 +8,8 @@ import {
 	getRandomIntInclusive,
 } from '../../utils';
 import Slots from '../Slots';
+import SecretLink from '../SecretLink';
+import { Button } from '../..';
 
 const Form = styled.form`
 	display: flex;
@@ -15,25 +17,6 @@ const Form = styled.form`
 	flex-direction: column;
 	align-items: center;
 	gap: 2.5rem;
-`;
-
-export const Button = styled.button`
-	font-family: 'Press Start 2P';
-	font-size: 1.25rem;
-	color: inherit;
-	background-color: #209cee;
-	border: 4px solid #244c73;
-	box-shadow: inset -4px -4px #006bb3;
-	padding: 1rem;
-	transition: filter 0.3s;
-	cursor: pointer;
-	:hover {
-		background-color: #0c83d1;
-	}
-	:disabled {
-		filter: grayscale(1);
-		pointer-events: none;
-	}
 `;
 
 const Buttons = styled.div`
@@ -112,19 +95,24 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<Slots arrays={randomArrays} durations={randomDurations.current} />
-			<H2 $shown={spinFinished}>{limitReached ? messages.win : loseMessage}</H2>
-			<Buttons>
-				<Button disabled={!spinFinished}>
-					{limitReached ? 'Drop Coin' : 'Spin Again'}
-				</Button>
-				<p>or</p>
-				<Button type='button' onClick={() => router.back()}>
-					Go Back
-				</Button>
-			</Buttons>
-		</Form>
+		<section>
+			<SecretLink />
+			<Form onSubmit={handleSubmit}>
+				<Slots arrays={randomArrays} durations={randomDurations.current} />
+				<H2 $shown={spinFinished}>
+					{limitReached ? messages.win : loseMessage}
+				</H2>
+				<Buttons>
+					<Button disabled={!spinFinished}>
+						{limitReached ? 'Drop Coin' : 'Spin Again'}
+					</Button>
+					<p>or</p>
+					<Button type='button' onClick={() => router.back()}>
+						Go Back
+					</Button>
+				</Buttons>
+			</Form>
+		</section>
 	);
 }
 
