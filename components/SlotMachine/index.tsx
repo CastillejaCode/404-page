@@ -64,7 +64,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (limitReached) {
-			dropCoins({ coins: 1 });
+			dropCoins({ coins: Math.round(Math.random() * 4 + 1) });
 		} else {
 			randomDurations.current = createRandomDurations();
 			handleSpin();
@@ -101,7 +101,7 @@ export default function SlotMachine({ spinLimit, messages }: Props) {
 			<H2 $shown={spinFinished}>{limitReached ? messages.win : loseMessage}</H2>
 			<Form onSubmit={handleSubmit}>
 				<Button disabled={!spinFinished}>
-					{limitReached ? 'Drop Coin' : 'Spin Again'}
+					{limitReached ? 'Drop Coins' : 'Spin Again'}
 				</Button>
 				<p>or</p>
 				<Button type='button' onClick={() => router.back()}>
