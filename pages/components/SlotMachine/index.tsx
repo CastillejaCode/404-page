@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Button } from '../..';
 import {
 	convertToNumberArray,
 	createRandomDurations,
 	dropCoins,
 	getRandomIntInclusive,
 } from '../../utils';
-import Slots from '../Slots';
 import SecretLink from '../SecretLink';
-import { Button } from '../..';
+import Slots from '../Slots';
 
 const Section = styled.section`
 	display: flex;
