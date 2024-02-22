@@ -26,5 +26,5 @@ export default function Home() {
 	function navigateToError() {
 		router.push('doesnt-exist');
 	}
-	return <Button onClick={navigateToError}>Error</Button>;
+	return <Button onClick={navigateToError}>Not Found</Button>;
 }
