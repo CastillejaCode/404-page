@@ -17,3 +17,9 @@ h6 {
 	margin: 0;
 	padding: 0;
 }
+
+.coin {
+	position: fixed;
+	top: 0;
+	aspect-ratio: 1;
+}
