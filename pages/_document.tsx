@@ -17,6 +17,11 @@ export default class MyDocument extends Document {
 						sheet.collectStyles(
 							<>
 								<Head>
+									<meta
+										name='viewport'
+										content='width=device-width, initial-scale=1.0'
+									/>
+									<title>404</title>
 									<link
 										rel='apple-touch-icon'
 										sizes='180x180'
@@ -39,14 +44,14 @@ export default class MyDocument extends Document {
 									<link
 										rel='preconnect'
 										href='https://fonts.gstatic.com'
-										crossorigin
+										crossOrigin='anonymous'
 									/>
 									<link
 										href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'
 										rel='stylesheet'
 									/>
 								</Head>
-								<App {...props} />
+								<App {...props}></App>
 							</>
 						),
 				});

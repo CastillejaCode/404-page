@@ -1,5 +1,5 @@
-import SlotMachine from './components/SlotMachine';
-import { getRandomIntInclusive } from './utils';
+import SlotMachine from '../components/SlotMachine';
+import { getRandomIntInclusive } from '../utils';
 
 const config = {
 	// A "winning" spin will be within this range

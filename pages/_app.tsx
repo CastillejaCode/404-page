@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import '../styles/globals.css';
+import Head from 'next/head';
 
 const Main = styled.main`
 	display: flex;
@@ -13,9 +14,11 @@ const Main = styled.main`
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<Main>
-			<Component {...pageProps} />
-		</Main>
+		<>
+			<Main>
+				<Component {...pageProps} />
+			</Main>
+		</>
 	);
 }
 

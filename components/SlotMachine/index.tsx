@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '../..';
+import { Button } from '../../pages';
 import {
 	convertToNumberArray,
 	createRandomDurations,
